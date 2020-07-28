@@ -1,7 +1,6 @@
 package com.jsmartx.mybatis.plugins;
 
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,29 +41,24 @@ public class RenameExampleMethodPlugin extends PluginAdapter {
 	private String replaceString;
 	private Pattern pattern;
 
-	public RenameExampleMethodPlugin() {
-	}
-
 	@Override
 	public boolean validate(List<String> warnings) {
 
-		searchString = properties.getProperty("searchString"); //$NON-NLS-1$
-		replaceString = properties.getProperty("replaceString"); //$NON-NLS-1$
+		searchString = properties.getProperty("searchString");
+		replaceString = properties.getProperty("replaceString");
 
 		boolean valid = stringHasValue(searchString) && stringHasValue(replaceString);
 
 		if (valid) {
 			pattern = Pattern.compile(searchString);
 		} else {
+			String clz = this.getClass().getSimpleName();
+			String tpl = "Property %s not set for plugin %s";
 			if (!stringHasValue(searchString)) {
-				warnings.add(getString("ValidationError.18", //$NON-NLS-1$
-						"RenameExampleMethodPlugin", //$NON-NLS-1$
-						"searchString")); //$NON-NLS-1$
+				warnings.add(String.format(tpl, "searchString", clz));
 			}
 			if (!stringHasValue(replaceString)) {
-				warnings.add(getString("ValidationError.18", //$NON-NLS-1$
-						"RenameExampleMethodPlugin", //$NON-NLS-1$
-						"replaceString")); //$NON-NLS-1$
+				warnings.add(String.format(tpl, "replaceString", clz));
 			}
 		}
 
@@ -78,14 +72,14 @@ public class RenameExampleMethodPlugin extends PluginAdapter {
 
 	@Override
 	public void initialized(IntrospectedTable introspectedTable) {
-		introspectedTable.setCountByExampleStatementId(replace("countByExample")); //$NON-NLS-1$
-		introspectedTable.setDeleteByExampleStatementId(replace("deleteByExample")); //$NON-NLS-1$
-		introspectedTable.setSelectByExampleStatementId(replace("selectByExample")); //$NON-NLS-1$
-		introspectedTable.setSelectByExampleWithBLOBsStatementId(replace("selectByExampleWithBLOBs")); //$NON-NLS-1$
-		introspectedTable.setUpdateByExampleStatementId(replace("updateByExample")); //$NON-NLS-1$
-		introspectedTable.setUpdateByExampleSelectiveStatementId(replace("updateByExampleSelective")); //$NON-NLS-1$
-		introspectedTable.setUpdateByExampleWithBLOBsStatementId(replace("updateByExampleWithBLOBs")); //$NON-NLS-1$
-		introspectedTable.setExampleWhereClauseId(replace("Example_Where_Clause")); //$NON-NLS-1$
-		introspectedTable.setMyBatis3UpdateByExampleWhereClauseId(replace("Update_By_Example_Where_Clause")); //$NON-NLS-1$
+		introspectedTable.setCountByExampleStatementId(replace("countByExample"));
+		introspectedTable.setDeleteByExampleStatementId(replace("deleteByExample"));
+		introspectedTable.setSelectByExampleStatementId(replace("selectByExample"));
+		introspectedTable.setSelectByExampleWithBLOBsStatementId(replace("selectByExampleWithBLOBs"));
+		introspectedTable.setUpdateByExampleStatementId(replace("updateByExample"));
+		introspectedTable.setUpdateByExampleSelectiveStatementId(replace("updateByExampleSelective"));
+		introspectedTable.setUpdateByExampleWithBLOBsStatementId(replace("updateByExampleWithBLOBs"));
+		introspectedTable.setExampleWhereClauseId(replace("Example_Where_Clause"));
+		introspectedTable.setMyBatis3UpdateByExampleWhereClauseId(replace("Update_By_Example_Where_Clause"));
 	}
 }
